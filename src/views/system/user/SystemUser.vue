@@ -1,5 +1,15 @@
 <template>
   <div class="system-user">
+    <el-form inline>
+      <el-form-item label="用户名">
+        <el-input v-model="queryParams.username" class="input-width-200" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="getTableData">查询</el-button>
+        <el-button type="primary" @click="handleAdd">添加用户</el-button>
+      </el-form-item>
+    </el-form>
+
     <TableCustomer :data="tableData" :pageSize="queryParams.pageSize" :pageNum="queryParams.pageNum" :total="total">
       <el-table-column prop="username" label="用户名" align="center"> </el-table-column>
       <el-table-column prop="createTime" label="创建时间" align="center">
@@ -24,6 +34,7 @@ export default {
     return {
       total: 0,
       queryParams: {
+        username: "",
         pageNum: 1,
         pageSize: 10,
       },
@@ -41,6 +52,9 @@ export default {
         this.total = res.data.total
       }
     },
+    handleAdd() {
+      console.log("add")
+    }
   },
 }
 </script>

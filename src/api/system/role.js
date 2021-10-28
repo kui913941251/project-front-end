@@ -16,6 +16,14 @@ export function apiAdd(data) {
   })
 }
 
+export function apiDetail(data) {
+  return request({
+    url: '/system/role/detail',
+    method: 'post',
+    data
+  })
+}
+
 export function apiUpdate(data) {
   return request({
     url: '/system/role/update',

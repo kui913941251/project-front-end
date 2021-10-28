@@ -83,6 +83,13 @@ export const variableRoutes = [
         component: () => import('@/views/system/role/SystemRole'),
         meta: { title: '角色', icon: 'dashboard' },
       },
+      {
+        path: '/system/role/modify/:id?',
+        name: 'SystemRoleModify',
+        component: () => import('@/views/system/role/SystemRoleModify'),
+        hidden: true,
+        meta: { title: '角色修改', icon: 'dashboard', activeMenu: "/system/role" },
+      },
     ],
   },
 ]
