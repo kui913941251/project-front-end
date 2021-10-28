@@ -90,6 +90,12 @@ export const variableRoutes = [
         hidden: true,
         meta: { title: '角色修改', icon: 'dashboard', activeMenu: "/system/role" },
       },
+      {
+        path: '/system/auth',
+        name: 'SystemAuth',
+        component: () => import('@/views/system/auth/SystemAuth'),
+        meta: { title: '权限', icon: 'dashboard' },
+      }
     ],
   },
 ]
