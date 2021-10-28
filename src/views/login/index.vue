@@ -66,17 +66,11 @@ import storageUtil from "@/utils/storageUtil"
 import { validUsername } from '@/utils/validate'
 import axios from 'axios'
 import { login } from '@/api/system/user'
+import { addRouter } from "@/utils/auth"
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 5) {
         callback(new Error('The password can not be less than 5 digits'))
@@ -91,7 +85,7 @@ export default {
         captcha: '',
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [{ required: true, trigger: 'blur', message: "请输入用户名" }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
       },
       loading: false,
@@ -144,6 +138,10 @@ export default {
       if (res.success) {
         this.$store.commit("user/SET_USER", res.data)
         storageUtil.setStorage("userInfo", res.data)
+        addRouter(this)
+        if (this.$router.options.routes.indexOf(this.redirect) === -1) {
+          this.redirect = ""
+        }
         this.$router.push({ path: this.redirect || '/' })
       }
       this.loading = false
