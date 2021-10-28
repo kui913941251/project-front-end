@@ -1,10 +1,11 @@
 <template>
   <div class="table-customer">
-    <el-table :data="data" border>
+    <el-table :data="data" border :row-key="rowKey" :tree-props="treeProps">
       <slot></slot>
     </el-table>
 
     <el-pagination
+      v-if="!rowKey"
       :layout="layout"
       :current-page="pageNum"
       :page-size="pageSize"
@@ -31,26 +32,37 @@ export default {
       type: Boolean,
       default: true,
     },
+    rowKey: {
+      type: String,
+      default: '',
+    },
+    treeProps: {
+      type: Object,
+      default() {
+        return { children: 'children', hasChildren: 'hasChildren' }
+      },
+    },
     layout: {
       type: String,
       default: 'total, sizes, prev, pager, next, jumper',
-    },
-    pageSize: {
-      type: Number,
-      required: true,
     },
     pageSizes: {
       type: Array,
       default() {
         return [10, 20]
-      }
+      },
+    },
+    pageSize: {
+      type: Number,
+      default: 10
     },
     pageNum: {
       type: Number,
-      required: true,
+      default: 1
     },
     total: {
       type: Number,
+      default: 0
     },
   },
   data() {
@@ -59,11 +71,11 @@ export default {
   methods: {
     handleSizeChange(val) {
       this.$emit('change')
-      this.$emit("update:pageSize", val)
+      this.$emit('update:pageSize', val)
     },
     handleCurrentChange(val) {
       this.$emit('change')
-      this.$emit("update:pageNum", val)
+      this.$emit('update:pageNum', val)
     },
   },
 }
