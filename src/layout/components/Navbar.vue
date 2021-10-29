@@ -7,23 +7,18 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
+          <img :src="avatar" class="user-avatar" />
+          <span class="user-name">{{ userInfo.username }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              Home
+              个人中心
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">登出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -32,7 +27,7 @@
 </template>
 
 <script>
-import storageUtil from "@/utils/storageUtil"
+import storageUtil from '@/utils/storageUtil'
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
@@ -48,7 +43,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebar']),
+    ...mapGetters(['sidebar', 'userInfo']),
   },
   methods: {
     toggleSideBar() {
@@ -56,7 +51,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      storageUtil.removeStorage("userInfo")
+      storageUtil.removeStorage('userInfo')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
   },
@@ -119,21 +114,26 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        cursor: pointer;
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         .user-avatar {
-          cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
         }
 
+        .user-name {
+          margin-left: 10px;
+        }
+
         .el-icon-caret-bottom {
-          cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 20px;
           font-size: 12px;
         }
       }
