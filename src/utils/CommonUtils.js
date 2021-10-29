@@ -1,9 +1,15 @@
-const cryptojs = require('crypto-js')
+import cryptojs from 'crypto-js'
+import lodash from 'lodash'
 
-function toSha256(value) {
+export function toSha256(value) {
   return cryptojs.SHA256(value).toString()
 }
 
-module.exports = {
+export function cloneDeep(value) {
+  return lodash.cloneDeep(value)
+}
+
+export default {
   toSha256,
+  cloneDeep,
 }
