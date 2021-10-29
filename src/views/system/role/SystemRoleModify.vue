@@ -16,6 +16,7 @@
           :default-expanded-keys="defaultChecked"
           :default-checked-keys="defaultChecked"
           :props="defaultProps"
+          :check-strictly="true"
         >
         </el-tree>
       </el-form-item>
