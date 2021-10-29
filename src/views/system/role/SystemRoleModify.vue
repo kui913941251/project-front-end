@@ -9,6 +9,7 @@
       </el-form-item>
       <el-form-item label="权限" prop="des">
         <el-tree
+          v-loading="authTreeLoading"
           ref="authTree"
           :data="authTree"
           show-checkbox
@@ -46,6 +47,7 @@ export default {
       roleFormRules: {
         roleName: [{ required: true, trigger: 'blur', message: '请输入角色名' }],
       },
+      authTreeLoading: false,
       authTree: [],
       defaultProps: {
         children: 'children',
@@ -74,10 +76,12 @@ export default {
       }
     },
     async getAuthTree() {
-      let res = await apiAuthTree()
+      this.authTreeLoading = true
+      let res = await apiAuthTree().catch((err) => err)
       if (res.success) {
         this.authTree = res.data
       }
+      this.authTreeLoading = false
     },
     async handleSubmit() {
       let validateRes = await this.$refs.roleForm.validate().catch((err) => err)
