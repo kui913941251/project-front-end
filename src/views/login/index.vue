@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import storageUtil from "@/utils/storageUtil"
-import { validUsername } from '@/utils/validate'
+import storageUtil from '@/utils/storageUtil'
 import axios from 'axios'
 import { login } from '@/api/system/user'
-import { addRouter } from "@/utils/auth"
+import { addRouter } from '@/utils/auth'
+import CommomUtils from '@/utils/CommonUtils'
 
 export default {
   name: 'Login',
@@ -85,7 +85,7 @@ export default {
         captcha: '',
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', message: "请输入用户名" }],
+        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
       },
       loading: false,
@@ -112,8 +112,8 @@ export default {
         url: process.env.VUE_APP_BASE_API + '/system/user/captcha',
         params: { username: this.loginForm.username },
       })
-      if (typeof res.data === "object") {
-        return this.$message.error("获取验证码失败")
+      if (typeof res.data === 'object') {
+        return this.$message.error('获取验证码失败')
       }
       this.captcha = res.data
       this.$nextTick(() => {
@@ -134,15 +134,21 @@ export default {
       let validateRes = await this.$refs.loginForm.validate()
       if (!validateRes) return
       this.loading = true
-      let res = await login(this.loginForm).catch(err => err)
+
+      let res = await login({
+        ...this.loginForm,
+        password: CommomUtils.toSha256(this.loginForm.password),
+      }).catch((err) => err)
       if (res.success) {
-        this.$store.commit("user/SET_USER", res.data)
-        storageUtil.setStorage("userInfo", res.data)
+        this.$store.commit('user/SET_USER', res.data)
+        storageUtil.setStorage('userInfo', res.data)
         addRouter(this)
         if (this.$router.options.routes.indexOf(this.redirect) === -1) {
-          this.redirect = ""
+          this.redirect = ''
         }
         this.$router.push({ path: this.redirect || '/' })
+      }else {
+        this.getCaptcha()
       }
       this.loading = false
     },
