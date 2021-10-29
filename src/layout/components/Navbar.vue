@@ -8,7 +8,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar" />
-          <span class="user-name">{{ userInfo.username }}</span>
+          <span class="user-name">{{ userInfo.username && userInfo.username }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
