@@ -1,6 +1,13 @@
 <template>
   <div class="dialog-customer">
-    <el-dialog :title="title" :visible.sync="dialogVisible" :width="width" :before-close="beforeClose">
+    <el-dialog
+      :title="title"
+      :visible.sync="dialogVisible"
+      :width="width"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
       <slot></slot>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">{{ cancelLable }}</el-button>
@@ -25,12 +32,6 @@ export default {
     width: {
       type: String,
       default: '30%',
-    },
-    beforeClose: {
-      type: Function,
-      default() {
-        return function() {}
-      },
     },
     cancelLable: {
       type: String,
