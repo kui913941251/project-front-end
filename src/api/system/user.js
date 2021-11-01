@@ -23,6 +23,13 @@ export function logout() {
   })
 }
 
+export function apiInfo() {
+  return request({
+    url: '/system/user/info',
+    method: 'post'
+  })
+}
+
 export function apiUserList(data) {
   return request({
     url: '/system/user/list',
