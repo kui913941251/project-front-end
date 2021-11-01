@@ -7,7 +7,8 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar" />
+          <el-avatar icon="el-icon-user-solid" :src="avatar">{{ userInfo && userInfo.username }}</el-avatar>
+          <!-- <img :src="avatar" class="user-avatar" /> -->
           <span class="user-name">{{ userInfo && userInfo.username }}</span>
           <i class="el-icon-caret-bottom" />
         </div>

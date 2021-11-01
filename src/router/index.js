@@ -57,6 +57,19 @@ export const constantRoutes = [
     ],
   },
 
+  {
+    path: '/personal',
+    component: Layout,
+    children: [
+      {
+        path: '/personal/index',
+        name: 'PersonalCentere',
+        component: () => import('@/views/personalCenter/PersonalCenter'),
+        meta: { title: '个人中心', icon: 'dashboard' },
+      },
+    ],
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true },
 ]
@@ -75,26 +88,26 @@ export const variableRoutes = [
         path: '/system/user',
         name: 'SystemUser',
         component: () => import('@/views/system/user/SystemUser'),
-        meta: { title: '用户', icon: 'dashboard' },
+        meta: { title: '用户', icon: 'dashboard', auth: "SYSTEM_USER" },
       },
       {
         path: '/system/role',
         name: 'SystemRole',
         component: () => import('@/views/system/role/SystemRole'),
-        meta: { title: '角色', icon: 'dashboard' },
+        meta: { title: '角色', icon: 'dashboard', auth: "SYSTEM_ROLE" },
       },
       {
         path: '/system/role/modify/:id?',
         name: 'SystemRoleModify',
         component: () => import('@/views/system/role/SystemRoleModify'),
         hidden: true,
-        meta: { title: '角色修改', icon: 'dashboard', activeMenu: "/system/role" },
+        meta: { title: '角色修改', icon: 'dashboard', activeMenu: "/system/role", auth: "SYSTEM_ROLE_UPDATE" },
       },
       {
         path: '/system/auth',
         name: 'SystemAuth',
         component: () => import('@/views/system/auth/SystemAuth'),
-        meta: { title: '权限', icon: 'dashboard' },
+        meta: { title: '权限', icon: 'dashboard', auth: "SYSTEM_AUTH" },
       }
     ],
   },
@@ -104,7 +117,7 @@ const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: [...variableRoutes, ...constantRoutes],
+    routes: [],
   })
 
 const router = createRouter()
