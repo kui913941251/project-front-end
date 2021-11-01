@@ -40,11 +40,14 @@ export default {
   },
   data() {
     return {
-      avatar: '',
+      baseUrl: process.env.VUE_APP_BASE_STATIC,
     }
   },
   computed: {
     ...mapGetters(['sidebar', 'userInfo']),
+    avatar() {
+      return this.userInfo && this.baseUrl + this.userInfo.avatar
+    },
   },
   methods: {
     toggleSideBar() {

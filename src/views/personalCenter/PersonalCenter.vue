@@ -2,25 +2,51 @@
   <div class="personal-center">
     <div class="base-info">
       <div class="avatar">
-        <el-avatar src="/123"></el-avatar>
-        <span class="username">{{ userInfo.username }}</span>
+        <img :src="avatar" />
       </div>
+      <span class="username">{{ userInfo.username }}</span>
     </div>
-    <el-tabs class="tab-bar" tab-position="left" style="height: 400px;">
+    <el-tabs class="tab-bar" tab-position="left">
+      <el-tab-pane label="头像">
+        <div class="avatar-container">
+          <div class="cutting-box">
+            <div class="image-choose" v-if="!avatarChange.imgUrl" @click="handleChooseImage">
+              <i class="el-icon-upload"></i>
+              选择图片上传
+            </div>
+            <div style="width: 300px;height: 200px" v-else>
+              <VueCropper
+                ref="cropper"
+                :img="avatarChange.imgUrl"
+                :autoCrop="true"
+                :canScale="false"
+                :centerBox="true"
+                :fixed="true"
+                :canMove="false"
+                :infoTrue="true"
+                @realTime="realTime"
+              ></VueCropper>
+            </div>
+            <div class="btn" v-if="avatarChange.imgUrl">
+              <el-button @click="handleChooseImage">更换图片</el-button>
+              <el-button @click="handleSubmit">上传</el-button>
+            </div>
+          </div>
+          <div class="show-preview" v-if="avatarChange.imgUrl">
+            预览
+            <div :style="{ ...avatarChange.previews.div, overflow: 'hidden' }">
+              <img :src="avatarChange.previews.url" :style="{ ...avatarChange.previews.img }" />
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
       <el-tab-pane label="基础信息"> </el-tab-pane>
-      <el-tab-pane label="头像">头像</el-tab-pane>
     </el-tabs>
-    <div style="width: 200px;height: 200px">
-      <el-button @click="handleChooseImage">选择图片</el-button>
-      <el-button @click="handleSubmit">上传</el-button>
-      <img :src="baseUrl + resultUrl" alt="" style="width: 100px;height:100px" />
-      <VueCropper ref="cropper" :img="imgUrl" :autoCrop="true" :canScale="false" :centerBox="true"></VueCropper>
-    </div>
   </div>
 </template>
 
 <script>
-import { apiInfo, apiImport } from '@/api/public/personal'
+import { apiInfo, apiImport, apiChangeAvatar } from '@/api/public/personal'
 import { VueCropper } from 'vue-cropper'
 
 export default {
@@ -31,17 +57,21 @@ export default {
   data() {
     return {
       baseUrl: process.env.VUE_APP_BASE_STATIC,
-      userInfo: {
-        username: 'demo',
+      userInfo: {},
+      avatarChange: {
+        updateImageFile: {},
+        imgUrl: '',
+        previews: {},
       },
-      updateImage: {},
-      imgUrl: '',
-      resultUrl: '',
     }
   },
   created() {
     this.getUserInfo()
-    console.log(process.env)
+  },
+  computed: {
+    avatar() {
+      return this.baseUrl + this.userInfo.avatar + '?s=' + new Date().getTime()
+    },
   },
   methods: {
     async getUserInfo() {
@@ -56,25 +86,34 @@ export default {
       input.accept = '.jpeg,.png,.jpg'
       input.addEventListener('change', (e) => {
         let file = e.target.files[0]
-        this.updateImage = file
+        this.avatarChange.updateImageFile = file
         let url = URL.createObjectURL(file)
 
-        this.imgUrl = url
+        this.avatarChange.imgUrl = url
         input = null
       })
       input.click()
     },
     handleSubmit() {
       this.$refs.cropper.getCropBlob(async (data) => {
-        console.log(data)
         let form = new FormData()
         form.append('file', data)
-        form.append('fileName', this.updateImage.name)
-        let res = await apiImport(form)
+        form.append('fileName', this.avatarChange.updateImageFile.name)
+        let impRes = await apiImport(form)
+        if (!impRes.success) return
+        let res = await apiChangeAvatar({
+          avatarPath: impRes.data,
+        })
         if (res.success) {
-          this.resultUrl = res.data + "?" + `s=${new Date().getTime()}`
+          this.$message.success('修改成功')
+          this.getUserInfo()
+          this.$store.dispatch('user/updateInfo')
+          Object.assign(this.avatarChange, this.$options.data().avatarChange)
         }
       })
+    },
+    realTime(data) {
+      this.avatarChange.previews = data
     },
   },
 }
@@ -85,15 +124,56 @@ export default {
   padding-left: 80px;
   padding-bottom: 20px;
   border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
   .avatar {
-    display: flex;
-    align-items: center;
-    .username {
-      padding-left: 15px;
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
     }
+  }
+  .username {
+    font-size: 18px;
+    padding-left: 15px;
+    font-family: "Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif";
   }
 }
 .tab-bar {
   padding-top: 20px;
+}
+
+.el-tab-pane {
+  padding: 10px;
+}
+
+.avatar-container {
+  display: flex;
+  .image-choose {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 200px;
+    background-color: #fafafa;
+    color: #c0c0c0;
+    cursor: pointer;
+    i {
+      font-size: 30px;
+    }
+  }
+  .cutting-box {
+    .btn {
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
+  .show-preview {
+    margin-left: 50px;
+  }
 }
 </style>

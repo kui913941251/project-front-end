@@ -10,7 +10,15 @@ export function apiInfo(data) {
 
 export function apiImport(data) {
   return request({
-    url: '/personal/import',
+    url: '/personal/importAvatar',
+    method: 'post',
+    data
+  })
+}
+
+export function apiChangeAvatar(data) {
+  return request({
+    url: '/personal/changeAvatar',
     method: 'post',
     data
   })
