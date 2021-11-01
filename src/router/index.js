@@ -33,6 +33,7 @@ import Layout from '@/layout'
 export const constantRoutes = [
   {
     path: '/login',
+    name: "Login",
     component: () => import('@/views/login/index'),
     hidden: true,
   },
@@ -63,7 +64,7 @@ export const constantRoutes = [
     children: [
       {
         path: '/personal/index',
-        name: 'PersonalCentere',
+        name: 'PersonalCenter',
         component: () => import('@/views/personalCenter/PersonalCenter'),
         meta: { title: '个人中心', icon: 'dashboard' },
       },
