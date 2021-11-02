@@ -33,7 +33,7 @@ import Layout from '@/layout'
 export const constantRoutes = [
   {
     path: '/login',
-    name: "Login",
+    name: 'Login',
     component: () => import('@/views/login/index'),
     hidden: true,
   },
@@ -77,6 +77,44 @@ export const constantRoutes = [
 
 export const variableRoutes = [
   {
+    path: '/mall',
+    component: Layout,
+    redirect: '/mall/goods',
+    meta: {
+      title: '商城',
+      icon: 'dashboard',
+    },
+    children: [
+      {
+        path: '/mall/goods',
+        name: 'MallGoods',
+        component: () => import('@/views/mall/goods/MallGoods'),
+        meta: {
+          title: '商品管理',
+          icon: 'dashboard',
+        },
+      },
+      {
+        path: '/mall/goods/modify/:id?',
+        name: 'MallGoodsModify',
+        component: () => import('@/views/mall/goods/MallGoodsModify'),
+        hidden: true,
+        meta: {
+          title: '商品添加修改',
+        },
+      },
+      {
+        path: '/mall/order',
+        name: 'MallOrder',
+        component: () => import('@/views/mall/order/MallOrder'),
+        meta: {
+          title: '订单管理',
+          icon: 'dashboard',
+        },
+      },
+    ],
+  },
+  {
     path: '/system',
     component: Layout,
     redirect: '/system/user',
@@ -89,27 +127,27 @@ export const variableRoutes = [
         path: '/system/user',
         name: 'SystemUser',
         component: () => import('@/views/system/user/SystemUser'),
-        meta: { title: '用户', icon: 'dashboard', auth: "SYSTEM_USER" },
+        meta: { title: '用户', icon: 'dashboard', auth: 'SYSTEM_USER' },
       },
       {
         path: '/system/role',
         name: 'SystemRole',
         component: () => import('@/views/system/role/SystemRole'),
-        meta: { title: '角色', icon: 'dashboard', auth: "SYSTEM_ROLE" },
+        meta: { title: '角色', icon: 'dashboard', auth: 'SYSTEM_ROLE' },
       },
       {
         path: '/system/role/modify/:id?',
         name: 'SystemRoleModify',
         component: () => import('@/views/system/role/SystemRoleModify'),
         hidden: true,
-        meta: { title: '角色修改', icon: 'dashboard', activeMenu: "/system/role", auth: "SYSTEM_ROLE_UPDATE" },
+        meta: { title: '角色修改', icon: 'dashboard', activeMenu: '/system/role', auth: 'SYSTEM_ROLE_UPDATE' },
       },
       {
         path: '/system/auth',
         name: 'SystemAuth',
         component: () => import('@/views/system/auth/SystemAuth'),
-        meta: { title: '权限', icon: 'dashboard', auth: "SYSTEM_AUTH" },
-      }
+        meta: { title: '权限', icon: 'dashboard', auth: 'SYSTEM_AUTH' },
+      },
     ],
   },
 ]
