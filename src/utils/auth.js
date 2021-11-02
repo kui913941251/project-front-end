@@ -1,6 +1,6 @@
 import store from '@/store/index'
 import router, { resetRouter, constantRoutes, variableRoutes } from '@/router/index'
-import { cloneDeep } from '@/utils/CommonUtils';
+import { cloneDeep } from '@/utils/CommonUtils'
 
 export function getToken() {
   return store.getters.token
@@ -31,11 +31,9 @@ function filterNoAuthRoutes(authCodeList, routes) {
     } else {
       if (route.children && route.children.length > 0) {
         let filterChildren = filterNoAuthRoutes(authCodeList, route.children)
-        if (filterChildren.length > 0) {
-          route.children = filterChildren
-          resRoutes.push(route)
-        }
+        route.children = filterChildren
       }
+      resRoutes.push(route)
     }
   }
   return resRoutes
