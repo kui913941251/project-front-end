@@ -1,14 +1,16 @@
 <template>
   <div class="system-user">
-    <el-form inline>
-      <el-form-item label="用户名">
-        <el-input v-model="queryParams.username" class="input-width-200" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="getTableData">查询</el-button>
-        <el-button type="primary" @click="handleAddUser">添加用户</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="filter-body">
+      <el-form inline>
+        <el-form-item label="用户名">
+          <el-input v-model="queryParams.username" class="input-width-200" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="getTableData">查询</el-button>
+          <el-button type="primary" @click="handleAddUser">添加用户</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
     <TableCustomer
       v-loading="tableDataLoading"
