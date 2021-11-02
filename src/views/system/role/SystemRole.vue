@@ -1,14 +1,16 @@
 <template>
   <div class="system-role">
-    <el-form inline>
-      <el-form-item label="角色名">
-        <el-input v-model="queryParams.roleName" class="input-width-200" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="getTableData">查询</el-button>
-        <el-button type="primary" @click="handleAdd">添加角色</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="filter-body">
+      <el-form inline>
+        <el-form-item label="角色名">
+          <el-input v-model="queryParams.roleName" class="input-width-200" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="getTableData">查询</el-button>
+          <el-button type="primary" @click="handleAdd">添加角色</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
     <TableCustomer
       v-loading="tableLoading"
@@ -57,7 +59,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
-      tableData: []
+      tableData: [],
     }
   },
   created() {
@@ -75,11 +77,11 @@ export default {
     },
     // 添加
     handleAdd() {
-      this.$router.push("/system/role/modify")
+      this.$router.push('/system/role/modify')
     },
     // 修改
     handleUpdate(row) {
-      this.$router.push("/system/role/modify/" + row.id)
+      this.$router.push('/system/role/modify/' + row.id)
     },
     // 删除
     async handleDelete(row) {
@@ -90,7 +92,7 @@ export default {
       }).catch((err) => err)
       if (confirmRes !== 'confirm') return
       let res = await apiDelete({
-        roleId: row.id,
+        id: row.id,
       }).catch((err) => err)
       if (res.success) {
         this.$message.success('删除成功')
