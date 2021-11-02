@@ -48,6 +48,7 @@
 <script>
 import { apiInfo, apiImport, apiChangeAvatar } from '@/api/public/personal'
 import { VueCropper } from 'vue-cropper'
+import CommonUtils from '@/utils/CommonUtils'
 
 export default {
   name: 'PersonalCenter',
@@ -81,14 +82,16 @@ export default {
       }
     },
     handleChooseImage() {
+      let accept = '.jpeg,.png,.jpg'
       let input = document.createElement('input')
       input.type = 'file'
-      input.accept = '.jpeg,.png,.jpg'
+      input.accept = accept
       input.addEventListener('change', (e) => {
         let file = e.target.files[0]
+        let extName = CommonUtils.getExtname(file.name)
+        if (accept.indexOf(extName) === -1) return this.$message.warning(`请传入${accept}格式的图片`)
         this.avatarChange.updateImageFile = file
         let url = URL.createObjectURL(file)
-
         this.avatarChange.imgUrl = url
         input = null
       })
@@ -139,7 +142,7 @@ export default {
   .username {
     font-size: 18px;
     padding-left: 15px;
-    font-family: "Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif";
+    font-family: 'Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif';
   }
 }
 .tab-bar {
@@ -159,9 +162,10 @@ export default {
     justify-content: center;
     width: 300px;
     height: 200px;
-    background-color: #fafafa;
+    background-color: #f3f3f3;
     color: #c0c0c0;
     cursor: pointer;
+    border-radius: 5px;
     i {
       font-size: 30px;
     }

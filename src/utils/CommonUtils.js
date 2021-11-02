@@ -9,7 +9,12 @@ export function cloneDeep(value) {
   return lodash.cloneDeep(value)
 }
 
+export function getExtname(fullName) {
+  return fullName.slice(fullName.lastIndexOf("."))
+}
+
 export default {
   toSha256,
   cloneDeep,
+  getExtname
 }
