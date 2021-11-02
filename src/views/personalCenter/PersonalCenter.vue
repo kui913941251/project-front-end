@@ -124,7 +124,7 @@ export default {
 
 <style scoped lang="scss">
 .base-info {
-  padding-left: 80px;
+  padding-left: 100px;
   padding-bottom: 20px;
   border-bottom: 1px solid #eee;
   display: flex;
