@@ -102,6 +102,7 @@ export default {
         let form = new FormData()
         form.append('file', data)
         form.append('fileName', this.avatarChange.updateImageFile.name)
+        form.append('fileType', 1)
         let impRes = await apiImport(form)
         if (!impRes.success) return
         let res = await apiChangeAvatar({
