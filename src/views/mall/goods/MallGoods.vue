@@ -35,6 +35,7 @@
       <el-table-column label="操作" align="center">
         <template v-slot="{ row }">
           <el-button type="warning" @click="handleUpdate(row)">修改</el-button>
+          <el-button type="warning" @click="handleOptionGroup">组合</el-button>
           <el-button type="danger" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
@@ -83,6 +84,10 @@ export default {
     // 修改
     handleUpdate(row) {
       this.$router.push('/mall/goods/modify/' + row.id)
+    },
+    // 修改组合
+    handleOptionGroup() {
+      
     },
     // 删除
     async handleDelete(row) {
