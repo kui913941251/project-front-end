@@ -18,6 +18,7 @@ const mutations = {
 const actions = {
   logout({ commit }) {
     commit('SET_USER', null)
+    storageUtil.clearStorage()
   },
   async updateInfo({ commit }) {
     let res = await apiInfo()
