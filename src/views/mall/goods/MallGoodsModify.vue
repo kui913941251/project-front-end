@@ -10,8 +10,9 @@
       <el-form-item label="商品选项">
         <div class="goods-option" v-for="(option, index) in goodsForm.options" :key="index">
           <div class="option-info">
-            选项类别{{ index + 1 }}: <el-input class="input-width-200" v-model="option.optionName"></el-input>
+            选项类别{{ index + 1 }}: <el-input class="input-width-200" v-model="option.optionName" maxlength="4"></el-input>
             <el-button @click="handleAddOptionItem(option)" style="margin-left: 10px">添加子选项</el-button>
+            <i class="el-icon-remove" @click="handleRemoveOption(index)"></i>
           </div>
           <div class="option-item" v-for="(optionItem, index2) in option.children" :key="index2">
             <el-form-item :label="`子选项${index2 + 1}`">
@@ -20,12 +21,12 @@
             </el-form-item>
           </div>
         </div>
-        <el-button @click="handleAddOption">添加父选项</el-button>
+        <el-button v-if="goodsForm.options.length < 3" @click="handleAddOption">添加父选项</el-button>
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="handleSubmit">确 定</el-button>
-        <el-button>取 消</el-button>
+        <el-button type="primary" @click="handleSubmit">确 定</el-button>
+        <el-button @click="$router.go(-1)">取 消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -83,6 +84,9 @@ export default {
       }
       option.children.push(optionItem)
     },
+    handleRemoveOption(index) {
+      this.goodsForm.options.splice(index, 1)
+    },
     handleRemoveOptionItem(parent, index) {
       parent.children.splice(index, 1)
     },
@@ -119,6 +123,11 @@ export default {
   .goods-option {
     .option-info {
       margin-bottom: 10px;
+      i {
+        cursor: pointer;
+        margin-left: 10px;
+        color: $color-danger;
+      }
     }
     .option-item {
       i {

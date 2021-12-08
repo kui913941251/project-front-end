@@ -39,3 +39,11 @@ export function apiDelete(data) {
     data
   })
 }
+
+export function apiAddGroup(data) {
+  return request({
+    url: '/mall/goods/addGroup',
+    method: 'post',
+    data
+  })
+}
