@@ -65,7 +65,7 @@
           <el-col :span="2.5"> 库存 <el-input v-model="group.stocks" class="input-width-50 input-padding"></el-input> </el-col>
           <el-col :span="2.5"> 价格 <el-input v-model="group.price" class="input-width-50 input-padding"></el-input> </el-col>
           <el-col :span="1" :key="groupIndex" style="line-height: 28px;color: #f56c6c;">
-            <i class="el-icon-remove" style="cursor: pointer;" @click="handleRemoveOptionItem(option, index2)"></i>
+            <i class="el-icon-remove" style="cursor: pointer;" @click="handleRemoveOptionItem(groupIndex)"></i>
           </el-col>
         </el-row>
       </template>
@@ -141,6 +141,9 @@ export default {
       }
       this.groupOptionForm.groupList.push(group)
     },
+    handleRemoveOptionItem(index) {
+      this.groupOptionForm.groupList.splice(index, 1)
+    },
     // 提交组合
     async handleGroupSubmit() {
       if (!this.validateFillDone()) return
@@ -186,7 +189,7 @@ export default {
           let catchArr = [...group.compose]
           catchArr[optionIndex] = option.id
           let expectCompose = catchArr.join(',')
-          return allCompose.indexOf(expectCompose) === -1
+          return allCompose.indexOf(expectCompose) === -1 || group.compose[this.allOption.length - 1] === option.id
         })
         return filterOptionList
       } else if (this.allOption.length === 3 && optionIndex === 1) {
@@ -205,9 +208,8 @@ export default {
             if (item.indexOf(expectCompose) !== -1) {
               sameNum++
             }
-            console.log(item)
           })
-          return sameNum < thirdOptionNum
+          return sameNum < thirdOptionNum  || group.compose[1] === option.id
         })
         return filterOptionList
       } else if (optionIndex === 0) {
@@ -228,7 +230,7 @@ export default {
               firstSelectNum++
             }
           })
-          return firstSelectNum < maxGroupNum
+          return firstSelectNum < maxGroupNum || group.compose[0] === option.id
         })
         return filterOptionList
       } else {
