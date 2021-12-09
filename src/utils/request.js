@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
+import router from "@/router"
 import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
@@ -49,10 +50,13 @@ service.interceptors.response.use(
       Message({
         message: res.message || 'Error',
         type: 'error',
-        duration: 5 * 1000
+        duration: 2 * 1000
       })
       if (res.code === 400) {
         store.dispatch("user/logout")
+        router.replace({
+          name: "Login"
+        })
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
